@@ -7,3 +7,5 @@ out/**
 tsconfig.json
 webpack.config.js
 *.vsix
+README.en.md
+README.ja.md

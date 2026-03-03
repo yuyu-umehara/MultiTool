@@ -1,10 +1,44 @@
 import * as vscode from 'vscode';
+import * as fs from 'fs';
+import * as os from 'os';
+import * as path from 'path';
 import { SidebarProvider } from './SidebarProvider';
 import { ToolEditorProvider } from './ToolEditorProvider';
 import { ToolManager } from './ToolManager';
+import { ToolItem } from './ToolManager';
 
+const MIGRATION_FLAG = 'multiTool.migrated_from_v0';
+
+async function runMigrationIfNeeded(context: vscode.ExtensionContext): Promise<void> {
+  if (context.globalState.get<boolean>(MIGRATION_FLAG)) { return; }
+
+  const migrationFile = path.join(os.tmpdir(), 'multitool_migration.json');
+  if (!fs.existsSync(migrationFile)) { return; }
+
+  try {
+    const imported: ToolItem[] = JSON.parse(fs.readFileSync(migrationFile, 'utf8'));
+    const stored = context.globalState.get<ToolItem[]>('multiTool.tools') || [];
+
+    // 既存IDと重複しないものだけ追加
+    const existingIds = new Set(stored.map(t => t.id));
+    const toAdd = imported.filter(t => !existingIds.has(t.id));
+
+    // 先頭に挿入し、order を振り直す
+    const merged = [...toAdd, ...stored];
+    merged.forEach((t, i) => { t.order = i; });
+
+    await context.globalState.update('multiTool.tools', merged);
+    await context.globalState.update(MIGRATION_FLAG, true);
+
+    fs.unlinkSync(migrationFile);
+  } catch {
+    // 移行失敗は無視（通常動作を妨げない）
+  }
+}
 
 export function activate(context: vscode.ExtensionContext) {
+  runMigrationIfNeeded(context);
+
   const toolManager = new ToolManager(context);
 
   let toolEditorProvider: ToolEditorProvider;

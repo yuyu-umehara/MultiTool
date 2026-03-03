@@ -21,7 +21,7 @@
     "type": "git",
     "url": "https://github.com/yuyu-umehara/MultiTool.git"
   },
-  "icon": "media/icon.png",
+  "icon": "images/icon.png",
   "license": "MIT",
   "l10n": "./l10n/bundle.l10n.json",
   "activationEvents": [],

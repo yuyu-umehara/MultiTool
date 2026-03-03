@@ -1,100 +1,100 @@
-# Multi Tool
+# マルチツール (Multi Tool)
 
-**Multi Tool** is a VS Code extension that lets you define custom JavaScript functions to transform selected text, with a built-in calculator in the sidebar.
+**マルチツール** は、選択したテキストを JavaScript 関数で自在に変換できるカスタムツールと、サイドバー組み込みの電卓を提供する VSCode 拡張機能です。
 
-## Features
+## 機能
 
-### Custom Text Transformation Tools
-- Define tools with JavaScript functions that receive selected text as `text` and return the transformed result
-- Supports `async/await` and `fetch` for network-based transformations
-- Multi-cursor support: all selections are transformed simultaneously
-- Optional "execute only when text is selected" guard to prevent accidental runs
+### カスタムテキスト変換ツール
+- JavaScript 関数を定義して選択テキストを変換（引数 `text` で受け取り、`return` で結果を返す）
+- `async/await` と `fetch` に対応（API 連携も可能）
+- マルチカーソル対応（すべての選択範囲を同時に変換）
+- 「選択範囲がある時のみ実行」オプションで誤爆防止
 
-### Built-in Calculator
-- Always available in the sidebar
-- Supports keyboard input (numpad-friendly)
-- Memory storage (up to 5 values)
-- Decimal point shift (`←.` / `.→`) for quick unit conversions
-- Undo/Redo history
-- Click the display to copy the result to clipboard
+### 組み込み電卓
+- サイドバーに常時表示
+- キーボード入力対応（テンキー使用可）
+- メモリ機能（最大5件）
+- 小数点シフト（`←.` / `.→`）で単位換算が簡単
+- アンドゥ/リドゥ履歴
+- 計算結果をクリックしてクリップボードにコピー
 
-### Tool Management
-- Add, edit, and delete tools from the sidebar
-- Group tools with separators for better organization
-- Drag & drop to reorder tools
-- Edit JavaScript functions directly in the VS Code editor with live sync
-- Install npm packages for use within tool functions
+### ツール管理
+- サイドバーからツールの追加・編集・削除
+- グループ（区切り）で整理
+- ドラッグ&ドロップで並び替え
+- VSCode エディターで JavaScript 関数を編集（リアルタイム同期）
+- ツール関数内で使う npm パッケージのインストール
 
-### Localization
-- English and Japanese are built-in
-- Other languages: contributions are welcome!
+### 多言語対応
+- 日本語・英語に標準対応
+- その他の言語への翻訳は有志の方の貢献を歓迎します！
 
 ---
 
-## Usage
+## 使い方
 
-### Creating a Tool
+### ツールを作成する
 
-1. Click the **Multi Tool** icon in the Activity Bar
-2. Click the **+** button in the toolbar
-3. Enter a name and optional description
-4. Write a JavaScript function in the editor:
+1. アクティビティバーの **マルチツール** アイコンをクリック
+2. ツールバーの **+** ボタンをクリック
+3. ツール名と説明（任意）を入力
+4. JavaScript 関数を記述：
 
 ```js
-// Convert to uppercase
+// 大文字に変換
 return text.toUpperCase();
 ```
 
-5. Click **Save**
+5. **保存** をクリック
 
-### Example Tools
+### ツール例
 
-**Base64 Encode**
+**Base64 エンコード**
 ```js
 return Buffer.from(text).toString('base64');
 ```
 
-**URL Decode**
+**URL デコード**
 ```js
 return decodeURIComponent(text);
 ```
 
-**Sort Lines**
+**行の並び替え**
 ```js
 return text.split('\n').sort().join('\n');
 ```
 
-**Fetch & Transform (async)**
+**API 連携（非同期）**
 ```js
 const res = await fetch(`https://api.example.com/convert?q=${encodeURIComponent(text)}`);
 const json = await res.json();
 return json.result;
 ```
 
-### Using the Calculator
+### 電卓の使い方
 
-- Click the **Multi Tool** icon to open the sidebar
-- The calculator is always visible at the top
-- Use keyboard shortcuts: `0-9`, `+ - * /`, `Enter` (=), `Backspace`, `Escape` (C), `M` (memory)
-- Press `M` to store the current number (up to 5 slots)
-- Use `←.` / `.→` to shift the decimal point left/right
-
----
-
-## Extension Settings
-
-No configuration required. Tool data is stored in VS Code's global state and persists across sessions.
+- アクティビティバーの **マルチツール** アイコンをクリック
+- サイドバー上部に電卓が常時表示されます
+- キーボードショートカット：`0〜9`、`+ - * /`、`Enter`（=）、`Backspace`、`Escape`（C）、`M`（メモリ保存）
+- `M` キーで現在の数値をメモリに保存（最大5件）
+- `←.` / `.→` で小数点を左右にシフト
 
 ---
 
-## Contributing
+## 設定
 
-Contributions are welcome, especially translations for additional languages.
-
-Repository: [https://github.com/yuyu-umehara/MultiTool](https://github.com/yuyu-umehara/MultiTool)
+設定不要です。ツールデータは VSCode のグローバルステートに保存され、セッションをまたいで保持されます。
 
 ---
 
-## License
+## コントリビュート
+
+翻訳を含むコントリビュート歓迎です。
+
+リポジトリ：[https://github.com/yuyu-umehara/MultiTool](https://github.com/yuyu-umehara/MultiTool)
+
+---
+
+## ライセンス
 
 MIT
