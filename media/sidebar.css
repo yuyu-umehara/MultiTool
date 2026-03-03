@@ -1,0 +1,391 @@
+/* サイドバー全体 */
+* {
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: default;
+}
+
+html, body {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ツール一覧コンテナ */
+.tool-list {
+  padding: 8px;
+  display: flex;
+  flex-direction: row; /* 横並び */
+  flex-wrap: wrap;     /* 折り返し */
+  gap: 4px;
+  height: 100%;
+  overflow-y: auto;
+  align-content: flex-start; /* 上詰め */
+}
+
+/* ツールボタン */
+.tool-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  /* ボタンらしいスタイルに戻す */
+  background-color: var(--vscode-button-secondaryBackground);
+  color: var(--vscode-button-secondaryForeground);
+  transition: background-color 0.1s;
+  user-select: none;
+  position: relative;
+  /* margin-bottom: 4px; -> gapで制御するため削除 */
+  border: 1px solid transparent;
+  text-align: left;
+  font-size: 0.9em;
+  
+  /* 2列表示 (gap: 4px なので、50% - 2px) */
+  width: calc(50% - 2px);
+  box-sizing: border-box;
+  flex-grow: 0; 
+}
+
+/* グループヘッダー */
+.tool-group-header {
+  background-color: var(--vscode-sideBarSectionHeader-background);
+  color: var(--vscode-sideBarSectionHeader-foreground);
+  font-weight: bold;
+  padding: 8px 8px;
+  margin-top: 8px;
+  /* margin-bottom: 4px; -> gapで制御 */
+  border-radius: 4px;
+  cursor: default;
+  display: flex;
+  align-items: center;
+  position: relative;
+  user-select: none;
+  
+  /* 全幅表示 */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.tool-group-header:hover {
+  background-color: var(--vscode-list-hoverBackground);
+}
+
+.tool-group-header .tool-name {
+  font-size: 0.95em;
+}
+
+/* 子要素のイベントを無効化して親のクリックを優先 */
+.tool-btn * {
+  pointer-events: none;
+}
+
+.tool-btn:hover {
+  background-color: var(--vscode-button-secondaryHoverBackground);
+  /* colorは継承または元の色を維持 */
+}
+
+/* ツール情報 */
+.tool-info {
+  flex-grow: 1;
+  min-width: 0;
+  overflow: hidden;
+  padding-right: 24px; /* 編集ボタンのスペース確保 */
+}
+
+.tool-name {
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 1.0em; /* 少し大きく */
+}
+
+.tool-description {
+  font-size: 0.85em;
+  color: var(--vscode-descriptionForeground);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 2px;
+}
+
+/* 説明非表示モード */
+.hide-descriptions .tool-description {
+  display: none;
+}
+.hide-descriptions .tool-btn {
+  padding: 6px 8px; /* パディングを少し詰めるか、そのままにするか */
+  align-items: center; /* 中央揃えにするなど */
+}
+
+/* 編集ボタン */
+.edit-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 6px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  color: var(--vscode-icon-foreground);
+  opacity: 0.1;
+  transition: opacity 0.2s, background-color 0.2s;
+  padding: 2px;
+  pointer-events: auto; /* ここだけ有効化 */
+  cursor: pointer;
+}
+
+.tool-btn:hover .edit-btn {
+  opacity: 0.6;
+}
+
+.edit-btn:hover {
+  opacity: 1 !important;
+  background-color: var(--vscode-toolbar-hoverBackground);
+}
+
+/* ビルトインバッジ */
+.tool-badge {
+  font-size: 0.65em;
+  padding: 1px 4px;
+  border-radius: 3px;
+  background-color: var(--vscode-badge-background);
+  color: var(--vscode-badge-foreground);
+  flex-shrink: 0;
+  white-space: nowrap;
+  margin-right: 4px;
+  align-self: flex-start;
+  margin-top: 2px;
+}
+
+/* 空メッセージ */
+.empty-message {
+  text-align: center;
+  color: var(--vscode-descriptionForeground);
+  padding: 24px 8px;
+  font-size: 0.9em;
+  opacity: 0.7;
+  width: 100%; /* 全幅 */
+}
+
+/* セパレーター */
+.tool-separator {
+  height: 1px;
+  background-color: var(--vscode-panel-border);
+  margin: 4px 0;
+  width: 100%; /* 全幅 */
+}
+
+/* 電卓スタイル */
+.calculator-container {
+  /* margin-bottom: 4px; -> gap */
+  cursor: default;
+  /* 全幅表示 */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.calculator {
+  background-color: var(--vscode-editor-widget-background);
+  border: 1px solid var(--vscode-widget-border);
+  border-radius: 6px;
+  padding: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  max-width: 260px; /* 最大幅を制限 */
+  margin: 0 auto;   /* 中央寄せ */
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.calculator:focus-within {
+  border-color: var(--vscode-focusBorder);
+  box-shadow: 0 0 4px var(--vscode-focusBorder);
+}
+
+.calc-header {
+  font-size: 0.8em;
+  font-weight: bold;
+  color: var(--vscode-sideBarTitle-foreground);
+  margin-bottom: 6px;
+  opacity: 0.8;
+  padding-left: 2px;
+}
+
+.calc-display-container {
+  margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+
+
+.calc-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  height: 16px;
+  overflow: hidden;
+  margin-bottom: 2px;
+}
+
+.calc-history {
+  text-align: right;
+  font-size: 0.8em;
+  color: var(--vscode-descriptionForeground);
+  white-space: nowrap;
+  opacity: 0.7;
+  flex-grow: 1;
+}
+
+.calc-memory {
+  display: flex;
+  gap: 4px;
+}
+
+.memory-item {
+  font-size: 0.75em;
+  background-color: var(--vscode-badge-background);
+  color: var(--vscode-badge-foreground);
+  padding: 1px 4px;
+  border-radius: 3px;
+  cursor: pointer;
+  white-space: nowrap;
+  max-width: 50px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.memory-item:hover {
+  opacity: 0.8;
+}
+
+.calc-display {
+  background-color: var(--vscode-input-background);
+  color: var(--vscode-input-foreground);
+  border: 1px solid var(--vscode-input-border);
+  border-radius: 4px;
+  padding: 2px 6px;
+  text-align: right;
+  font-family: monospace;
+  font-size: 1.5em;
+  height: 30px;
+  line-height: 30px;
+  overflow: hidden;
+  white-space: nowrap;
+  outline: none; /* フォーカス時の枠線はborderで代用 */
+}
+
+.calc-display:focus {
+  border-color: var(--vscode-focusBorder);
+}
+
+.calc-buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+}
+
+.calc-btn {
+  background-color: var(--vscode-button-secondaryBackground);
+  color: var(--vscode-button-secondaryForeground);
+  border: 1px solid transparent;
+  border-radius: 4px;
+  height: 22px; /* 32px * 2/3 */
+  font-size: 0.9em; /* 少し小さく */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.1s, background-color 0.1s;
+  user-select: none;
+}
+
+.calc-btn:hover {
+  background-color: var(--vscode-button-secondaryHoverBackground);
+}
+
+.calc-btn:active {
+  opacity: 0.7;
+}
+
+.calc-btn.operator,
+.calc-btn[data-val="/"],
+.calc-btn[data-val="*"] {
+  background-color: #1a9eb8;
+  color: white;
+  font-weight: bold;
+}
+
+.calc-btn.operator:hover,
+.calc-btn[data-val="/"]:hover,
+.calc-btn[data-val="*"]:hover {
+  background-color: #1589a0;
+}
+
+.calc-btn.equals {
+  grid-column: span 1; /* 1列分 */
+  background-color: var(--vscode-button-background);
+  color: var(--vscode-button-foreground);
+  font-weight: bold;
+  height: 100%; /* 高さ合わせ */
+  grid-row: span 2; /* 縦に2つ分結合 */
+}
+
+.calc-btn.equals:hover {
+  background-color: var(--vscode-button-hoverBackground);
+}
+
+.calc-btn.clear {
+  background-color: var(--vscode-errorForeground); /* 赤 */
+  color: white; /* 白文字 */
+  font-weight: bold;
+}
+.calc-btn.clear:hover {
+  opacity: 0.8;
+}
+
+.calc-btn[data-val="M"] {
+  background-color: #8e44ad; /* 紫 */
+  color: white;
+  font-weight: bold;
+}
+.calc-btn[data-val="M"]:hover {
+  background-color: #9b59b6;
+}
+
+.calc-btn.dot-shift,
+.calc-btn[data-val="undo"],
+.calc-btn[data-val="redo"] {
+  font-size: 0.85em;
+  background-color: var(--vscode-editor-background);
+  border-color: rgba(160, 160, 160, 0.75);
+  color: var(--vscode-descriptionForeground);
+}
+
+.calc-btn.dot-shift:hover,
+.calc-btn[data-val="undo"]:hover,
+.calc-btn[data-val="redo"]:hover {
+  background-color: var(--vscode-list-hoverBackground);
+}
+
+.calc-btn.disabled {
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+/* .calc-btn.zero は削除されたため削除 */
+
+.calc-footer {
+  margin-top: 6px;
+  font-size: 0.75em;
+  text-align: center;
+  color: var(--vscode-descriptionForeground);
+  opacity: 0.7;
+}

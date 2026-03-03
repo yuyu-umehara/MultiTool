@@ -1,0 +1,5 @@
+body {
+  color: var(--vscode-foreground);
+  font-size: var(--vscode-font-size);
+  font-family: var(--vscode-font-family);
+}

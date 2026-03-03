@@ -1,0 +1,10 @@
+{
+  "extension.displayName": "Multi Tool",
+  "extension.description": "A multi-tool for running various custom text transformations on selected text",
+  "view.title": "Multi Tool",
+  "view.name": "Multi Tool",
+  "command.addTool": "Add Tool",
+  "command.editTool": "Edit",
+  "command.deleteTool": "Delete",
+  "command.toggleDescriptions": "Show/Hide Descriptions"
+}

@@ -1,0 +1,10 @@
+{
+  "extension.displayName": "マルチツール",
+  "extension.description": "テキスト選択して様々なカスタム変換を実行できるマルチツール",
+  "view.title": "マルチツール",
+  "view.name": "マルチツール",
+  "command.addTool": "ツールを追加",
+  "command.editTool": "編集",
+  "command.deleteTool": "削除",
+  "command.toggleDescriptions": "説明を表示/非表示"
+}
